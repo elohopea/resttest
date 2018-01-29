@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>RESTfull API test</title>
+        <meta charset="utf-8">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="script/restfull.js"></script>
+    </head>
+    <body>
+        <h1>RESTfull API test</h1>
+        <p>This is the test page to test RESTfull API developed for awebsoftware development course.</p>
+        <p>Insert data to input boxes and press buttons. Results in JSON should appear on the end of the page.</p>
+        <p>UNDER CONSTRUCTION</p>
+        <br>
+        <div>
+                Game ID:
+                <input type="text" id="game_id" name="game_id" pattern="\d{1,5}" value="">
+        </div>
+        <div>
+                Developer ID:
+                <input type="text" id="dev_id" name="dev_id" pattern="\d{1,5}" value="">
+        </div>
+        <div>
+            <button id="contacts">Get contacts</button>
+            <button id="user_email">Get user email</button>
+            <button id="game">Game info</button>
+            <button id="delete_game">Delete a game</button>
+            <button id="games_for_sale">All games for sale</button>
+        </div>
+        <br>
+        <br>
+        <div>
+            Game URL:
+            <input type="text" id="game_url" name="game_url" value="">
+        </div>
+        <div>
+            Title:
+            <input type="text" id="game_title" name="game_title" value="">
+        </div>
+        <div>
+            Description:
+            <input type="text" id="game_description" name="game_description" value="">
+        </div>
+        <div>
+            Price:
+            <input type="text" id="game_price" name="game_price" value="">
+        </div>
+        <div>
+            Available:
+            <input type="text" id="game_available" name="game_available" value="">
+        </div>
+        <div>
+            Picture URL:
+            <input type="text" id="game_pic_url" name="game_pic_url" value="">
+        </div>
+        <div>
+            <p> game modification is missing</p>
+            <button id="add_game">Add a game to the service</button>
+
+            <button id="modify_game">Modify a game</button>
+            <button id="sales_stats">sales_stats</button>
+        </div>
+
+        <div id="result"></div>
+
+    </body>
+</html>
