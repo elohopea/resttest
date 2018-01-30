@@ -193,4 +193,17 @@ $(document).ready( function() {
         send_data_using_ajax(game_data, url_to_use)
     });
 
+
+
+    // Request the service to set the resolution of the
+    // iframe correspondingly
+    var message =  {
+        messageType: "SETTING",
+        options: {
+            "width": 800,
+            "height": 600
+        }
+    };
+    window.parent.postMessage(message, "*");
+
 });
