@@ -21,11 +21,11 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-
-
-
-// The base url of the service
-var base_url = 'http://127.0.0.1:8000/resources/' // add here the proper URL of the service!
+function goto_login(){
+    var base_url = $("#base_url").val();
+    var login_url = base_url + 'user/login/';
+    window.location.href = login_url;
+}
 
 function get_json_using_ajax(url_to_use) {
 
@@ -88,7 +88,7 @@ $(document).ready( function() {
 
     // Get the CSRF -token from cookie
     var csrftoken = getCookie('csrftoken');
-
+    var base_url = $("#base_url").val() + "resources/";
 
 
 
@@ -189,7 +189,8 @@ $(document).ready( function() {
 
     $("#modify_game").click( function () {
         var game_data = get_game_vars();
-        var url_to_use = base_url + 'modify_game/'
+        var game_id = $("#game_id").val()
+        var url_to_use = base_url + 'modify_game/' + game_id + "/"
         send_data_using_ajax(game_data, url_to_use)
     });
 
