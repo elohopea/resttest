@@ -201,8 +201,8 @@ $(document).ready( function() {
     var message =  {
         messageType: "SETTING",
         options: {
-            "width": 1200,
-            "height": 800
+            "width": 1600,
+            "height":1600
         }
     };
     window.parent.postMessage(message, "*");
