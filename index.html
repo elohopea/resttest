@@ -12,14 +12,15 @@
         <h1>RESTful API test</h1>
         <p>This is the test page to test RESTful API developed for awebsoftware development course.</p>
         <p>Insert data to input boxes and press buttons. Results in JSON should appear on the end of the page.</p>
-        <p>UNDER CONSTRUCTION</p>
+        <p>To use the restricted services you have to first create API key in the service (settings->create new key).</p>
         <br>
         <div>
             Base URL:
             <input type="text" id="base_url" name="Base_url" value="https://obscure-reef-34009.herokuapp.com/">
         </div>
         <div>
-            <button <input type="button" onclick="goto_login()" value ="login">Login to site</button>
+            API key:
+            <input type="text" id="API_key" name="API_key" value="">
         </div>
         <br>
         <br>
@@ -34,7 +35,6 @@
         </div>
         <div>
             <button id="contacts">Get contacts</button>
-            <button id="user_email">Get user email</button>
             <button id="game">Game info</button>
             <button id="delete_game">Delete a game</button>
             <button id="games_for_sale">All games for sale</button>
@@ -70,9 +70,7 @@
             <input type="text" id="game_pic_url" name="game_pic_url" value="">
         </div>
         <div>
-            <p> game modification is missing</p>
             <button id="add_game">Add a game to the service</button>
-
             <button id="modify_game">Modify a game</button>
             <button id="sales_stats">sales_stats</button>
         </div>
