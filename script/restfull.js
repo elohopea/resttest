@@ -21,23 +21,25 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-function goto_login(){
-    var base_url = $("#base_url").val();
-    var login_url = base_url + 'user/login/';
-    window.location.href = login_url;
+function getCookieWithCSRF() {
+    $.ajax({
+        method: "GET",
+        url: url_to_use,
+        success: function( response ) {
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Error in cookie: " + errorThrown);
+        }
+
+    });
+
 }
 
 function get_json_using_ajax(url_to_use) {
 
-    var csrftoken = getCookie('csrftoken');
     $.ajax({
         method: "GET",
         contentType: 'application/json',
-        "X-CSRFToken": csrftoken,
-        xhrFields: {
-            withCredentials: false
-        },
-        crossDomain:true,
         url: url_to_use,
         success: function( response ) {
             clearResult();
@@ -50,18 +52,20 @@ function get_json_using_ajax(url_to_use) {
     });
 }
 
-function send_data_using_ajax(data_out, url_to_use) {
-
+function post_json_using_ajax(data_out, url_to_use) {
+    var key = $("#API_key").val()
     var csrftoken = getCookie('csrftoken');
     $.ajax({
         method: "POST",
-        contentType: 'application/json',
         "X-CSRFToken": csrftoken,
         xhrFields: {
             withCredentials: false
         },
         crossDomain:true,
         url: url_to_use,
+        headers: {
+            Authorization: key
+        },
         data: data_out,
         success: function( response ) {
             clearResult();
@@ -86,16 +90,28 @@ function clearResult() {
 $(document).ready( function() {
     "use strict";
 
-    // Get the CSRF -token from cookie
-    var csrftoken = getCookie('csrftoken');
     var base_url = $("#base_url").val() + "resources/";
 
+    // Try to get Cookie With CSRF from site
+    $.ajax({
+        method: "GET",
+        url: base_url + "get_cookie/",
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Error in getting cookie: " + errorThrown);
+        }
+    });
+
+
+    // Get the CSRF -token from cookie
+    var csrftoken = getCookie('csrftoken');
 
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                xhr.setRequestHeader("Content-Type","application/json");
+                xhr.setRequestHeader("Accept","text/json");
             }
         }
     });
@@ -108,19 +124,11 @@ $(document).ready( function() {
 
     });
 
-    // This gets the current user email as JSON from server and inserts it into the index.html
-    $("#user_email").click( function () {
-        var url_to_use = base_url + 'user/'
-        get_json_using_ajax(url_to_use);
-    });
-
-
-    // This gets the current user email as JSON from server and inserts it into the index.html
+    // get data on a single game
     $("#game").click( function () {
-
         var game_id = $("#game_id").val()
         if (game_id) {
-            var url_to_use = base_url + "game/" + game_id
+            var url_to_use = base_url + "game/" + game_id+"/"
             get_json_using_ajax(url_to_use);
         } else {
             $("#result").html("no game id given");
@@ -134,7 +142,7 @@ $(document).ready( function() {
         var dev_id = $("#dev_id").val()
         var url_to_use = base_url
         if (dev_id) {
-            url_to_use = url_to_use + "games_for_sale_dev/" + dev_id
+            url_to_use = url_to_use + "games_for_sale_dev/" + dev_id + "/"
         } else {
             url_to_use = url_to_use + "games_for_sale/"
         }
@@ -147,9 +155,9 @@ $(document).ready( function() {
         var game_id = $("#game_id").val()
         var url_to_use = base_url + 'sales_stats/'
         if (game_id) {
-            url_to_use = url_to_use + game_id
+            url_to_use = url_to_use + game_id + "/"
         }
-        get_json_using_ajax(url_to_use);
+        post_json_using_ajax({}, url_to_use);
     });
 
 
@@ -159,7 +167,7 @@ $(document).ready( function() {
         if (game_id) {
             var url_to_use = base_url + 'delete_game/'
             url_to_use = url_to_use + game_id + "/"
-            send_data_using_ajax({}, url_to_use);
+            post_json_using_ajax({}, url_to_use);
         } else {
             $("#result").html("no game id given");
         }
@@ -172,28 +180,27 @@ $(document).ready( function() {
             pk = 0;
         }
         data.pk = pk;
-        data.game_url = $("#game_url").val();
-        data.game_title = $("#game_title").val();
-        data.game_description = $("#game_description").val();
-        data.game_price = $("#game_price").val();
-        data.game_available = $("#game_available").val();
-        data.game_pic_url = $("#game_pic_url").val();
+        data.url = $("#game_url").val();
+        data.title = $("#game_title").val();
+        data.description = $("#game_description").val();
+        data.price = $("#game_price").val();
+        data.available = $("#game_available").val();
+        data.pic_url = $("#game_pic_url").val();
         return data;
     }
 
     $("#add_game").click( function () {
         var game_data = get_game_vars();
         var url_to_use = base_url + 'add_game/'
-        send_data_using_ajax(game_data, url_to_use)
+        post_json_using_ajax(game_data, url_to_use)
     });
 
     $("#modify_game").click( function () {
         var game_data = get_game_vars();
-        var game_id = $("#game_id").val()
+        var game_id = $("#game_pk").val()
         var url_to_use = base_url + 'modify_game/' + game_id + "/"
-        send_data_using_ajax(game_data, url_to_use)
+        post_json_using_ajax(game_data, url_to_use)
     });
-
 
 
     // Request the service to set the resolution of the
@@ -201,8 +208,8 @@ $(document).ready( function() {
     var message =  {
         messageType: "SETTING",
         options: {
-            "width": 1600,
-            "height":1600
+            "width": 800,
+            "height": 600
         }
     };
     window.parent.postMessage(message, "*");
