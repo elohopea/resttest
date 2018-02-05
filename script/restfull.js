@@ -92,19 +92,8 @@ $(document).ready( function() {
 
     var base_url = $("#base_url").val() + "resources/";
 
-    // Try to get Cookie With CSRF from site
-    $.ajax({
-        method: "GET",
-        url: base_url + "get_cookie/",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("Error in getting cookie: " + errorThrown);
-        }
-    });
-
-
     // Get the CSRF -token from cookie
     var csrftoken = getCookie('csrftoken');
-
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
