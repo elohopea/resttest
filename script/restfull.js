@@ -54,6 +54,7 @@ function get_json_using_ajax(url_to_use) {
 
 function post_json_using_ajax(data_out, url_to_use) {
     var key = $("#API_key").val()
+
     var csrftoken = getCookie('csrftoken');
     $.ajax({
         method: "POST",
@@ -90,7 +91,6 @@ function clearResult() {
 $(document).ready( function() {
     "use strict";
 
-    var base_url = $("#base_url").val() + "resources/";
 
     // Get the CSRF -token from cookie
     var csrftoken = getCookie('csrftoken');
@@ -108,6 +108,7 @@ $(document).ready( function() {
 
     // This gets the contacts JSON from server and inserts it into the index.html
     $("#contacts").click( function () {
+        var base_url = $("#base_url").val() + "resources/";
         var url_to_use = base_url + 'contacts/'
         get_json_using_ajax(url_to_use);
 
@@ -116,6 +117,7 @@ $(document).ready( function() {
     // get data on a single game
     $("#game").click( function () {
         var game_slug = $("#game_slug").val()
+        var base_url = $("#base_url").val() + "resources/";
         if (game_slug) {
             var url_to_use = base_url + "game/" + game_slug
             get_json_using_ajax(url_to_use);
@@ -129,6 +131,7 @@ $(document).ready( function() {
     $("#games_for_sale").click( function () {
 
         var dev_id = $("#dev_id").val()
+        var base_url = $("#base_url").val() + "resources/";
         var url_to_use = base_url
         if (dev_id) {
             url_to_use = url_to_use + "games_for_sale_dev/" + dev_id + "/"
@@ -142,6 +145,7 @@ $(document).ready( function() {
     // This gets the sales statistics for a game or all games as JSON from server and inserts it into the index.html
     $("#sales_stats").click( function () {
         var game_slug = $("#game_slug").val()
+        var base_url = $("#base_url").val() + "resources/";
         var url_to_use = base_url + 'sales_stats/'
         if (game_slug) {
             url_to_use = url_to_use + game_slug
@@ -154,6 +158,7 @@ $(document).ready( function() {
     $("#delete_game").click( function () {
         var game_slug = $("#game_slug").val()
         if (game_slug) {
+            var base_url = $("#base_url").val() + "resources/";
             var url_to_use = base_url + 'delete_game/'
             url_to_use = url_to_use + game_slug + "/"
             post_json_using_ajax({}, url_to_use);
@@ -180,6 +185,7 @@ $(document).ready( function() {
 
     $("#add_game").click( function () {
         var game_data = get_game_vars();
+        var base_url = $("#base_url").val() + "resources/";
         var url_to_use = base_url + 'add_game/'
         post_json_using_ajax(game_data, url_to_use)
     });
@@ -187,6 +193,7 @@ $(document).ready( function() {
     $("#modify_game").click( function () {
         var game_data = get_game_vars();
         var game_slug = $("#game_slug").val()
+        var base_url = $("#base_url").val() + "resources/";
         var url_to_use = base_url + 'modify_game/' + game_slug + "/"
         post_json_using_ajax(game_data, url_to_use)
 
